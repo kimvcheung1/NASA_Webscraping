@@ -1,0 +1,21 @@
+import requests
+url = "https://apod.nasa.gov/apod/"
+response = requests.get(url)
+if response.status_code == 200:
+    html_content = response.html_content
+else:
+    print("Failed to retrieve the webpage.")
+
+from bs4 import BeautifulSoup
+soup = BeautifulSoup(html_content,"html.parser")
+image = soup.find("img")
+image_url = "https://apod.nasa.gov/apod/" + image["src"]
+title = soup.find("h1").text.strip()
+
+explanation = soup.find("p").text.strip()
+
+date = soup.find("center").text.strip()
+print("Image URL:", image_url)
+print("Title:", title)
+print("Explanation:", explanation)
+print("Date:", date)
